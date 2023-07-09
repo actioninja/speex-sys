@@ -13,7 +13,11 @@ categories = ["external-ffi-bindings", "multimedia::audio", "encoding"]
 keywords = ["speex", "libspeex", "vorbis", "compression"]
 links = "speex"
 include = [
-    "/*.*",
+    "/build.rs",
+    "/Cargo.toml",
+    "/LICENSE.md",
+    "/README.md",
+    "/wrapper.h",
     "/src",
     "/speex/AUTHORS",
     "/speex/COPYING",
