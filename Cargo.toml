@@ -11,6 +11,16 @@ description = "Unsafe rust bindings to the speex audio compression library"
 repository = "https://github.com/actioninja/speex-sys"
 categories = ["external-ffi-bindings", "multimedia::audio", "encoding"]
 keywords = ["speex", "libspeex", "vorbis", "compression"]
+links = "speex"
+include = [
+    "/*.*",
+    "/src",
+    "/speex/AUTHORS",
+    "/speex/COPYING",
+    "/speex/libspeex/**/*.c",
+    "/speex/libspeex/**/*.h",
+    "/speex/include/speex/**/*.h",
+]
 
 [build-dependencies]
 bindgen = "0.65"
