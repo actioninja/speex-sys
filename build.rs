@@ -1,12 +1,18 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2023.                                                         /
+// This Source Code Form is subject to the terms of the Mozilla Public License,/
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can    /
+// obtain one at http://mozilla.org/MPL/2.0/.                                  /
+////////////////////////////////////////////////////////////////////////////////
 use bindgen::CargoCallbacks;
 use std::env;
 use std::path::{Path, PathBuf};
 
 fn main() {
-    let c_src_path = Path::new("speex-1.2.1/libspeex")
+    let lib_path = Path::new("speex")
         .canonicalize()
         .expect("Failed to canonicalize");
-    let paths = [
+    let c_files = [
         "bits.c",
         "cb_search.c",
         "exc_5_64_table.c",
@@ -43,12 +49,15 @@ fn main() {
     ];
     let mut ccomp = cc::Build::new();
 
-    for path in paths {
+    ccomp.include(lib_path.join("include/speex"));
+
+    let c_src_path = lib_path.join("libspeex");
+
+    for path in c_files {
         ccomp.file(c_src_path.join(path));
     }
 
     let dst = PathBuf::from(env::var_os("OUT_DIR").unwrap());
-    println!("cargo:warning={:?}", dst.canonicalize().unwrap());
 
     ccomp.out_dir(dst.join("lib"));
     ccomp.compile("speex");

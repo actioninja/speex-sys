@@ -1,11 +1,16 @@
 [package]
 name = "speex-sys"
-version = "0.1.0"
+authors = [
+    "Rob Bailey <actioninja@criticalaction.net>",
+    "Xiph.org Foundation",
+]
+version = "1.2.1"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
+license = "MPL-2.0 WITH BSD-3-Clause"
+description = "Unsafe rust bindings to the speex audio compression library"
+repository = "https://github.com/actioninja/speex-sys"
+categories = ["external-ffi-bindings", "multimedia::audio", "encoding"]
+keywords = ["speex", "libspeex", "vorbis", "compression"]
 
 [build-dependencies]
 bindgen = "0.65"
