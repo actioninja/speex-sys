@@ -5,8 +5,9 @@
 // obtain one at http://mozilla.org/MPL/2.0/.                                  /
 ////////////////////////////////////////////////////////////////////////////////
 use bindgen::CargoCallbacks;
-use std::env;
-use std::path::PathBuf;
+use std::fs::read_to_string;
+use std::path::{Path, PathBuf};
+use std::{env, fs};
 
 fn main() {
     // Tell cargo to invalidate the built crate whenever the wrapper changes
@@ -47,6 +48,20 @@ fn main() {
         "vq.c",
         "window.c",
     ];
+
+    // bootleg template replacement
+    let path_to_config_types = Path::new("speex/include/speex/speex_config_types.h.in");
+    let str = read_to_string(path_to_config_types).unwrap();
+
+    let replaced = str
+        .replace("@INCLUDE_STDINT@", "#include <stdint.h>")
+        .replace("@SIZE16@", "int16_t")
+        .replace("@USIZE16@", "uint16_t")
+        .replace("@SIZE32@", "int32_t")
+        .replace("@USIZE32@", "uint32_t");
+
+    fs::write("speex/include/speex/speex_config_types.h", replaced).unwrap();
+
     let mut ccomp = cc::Build::new();
 
     ccomp.include("speex/include");
