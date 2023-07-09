@@ -14,7 +14,6 @@ keywords = ["speex", "libspeex", "vorbis", "compression"]
 links = "speex"
 include = [
     "/build.rs",
-    "/Cargo.toml",
     "/LICENSE.md",
     "/README.md",
     "/wrapper.h",
@@ -24,6 +23,7 @@ include = [
     "/speex/libspeex/**/*.c",
     "/speex/libspeex/**/*.h",
     "/speex/include/speex/**/*.h",
+    "!/speex/include/speex/speex_config_types.h",
 ]
 
 [build-dependencies]
