@@ -53,12 +53,7 @@ fn main() {
     println!("cargo:include=speex/include");
     println!("cargo:rustc-link-lib=speex");
     let dst = PathBuf::from(env::var_os("OUT_DIR").unwrap());
-    let link_dir = dst
-        .join("lib")
-        .canonicalize()
-        .unwrap()
-        .display()
-        .to_string();
+    let link_dir = dst.join("lib").to_str().map(str::to_string).unwrap();
     println!("cargo:rustc-link-search={link_dir}");
 
     for path in c_files {
