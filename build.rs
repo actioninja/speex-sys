@@ -6,12 +6,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 use bindgen::CargoCallbacks;
 use std::env;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 fn main() {
-    let lib_path = Path::new("speex")
-        .canonicalize()
-        .expect("Failed to canonicalize");
+    // Tell cargo to invalidate the built crate whenever the wrapper changes
+    println!("cargo:rerun-if-changed=wrapper.h");
+
     let c_files = [
         "bits.c",
         "cb_search.c",
@@ -49,20 +49,29 @@ fn main() {
     ];
     let mut ccomp = cc::Build::new();
 
-    ccomp.include(lib_path.join("include/speex"));
-
-    let c_src_path = lib_path.join("libspeex");
+    ccomp.include("speex/include");
+    println!("cargo:include=speex/include");
+    println!("cargo:rustc-link-lib=speex");
+    let dst = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    let link_dir = dst
+        .join("lib")
+        .canonicalize()
+        .unwrap()
+        .display()
+        .to_string();
+    println!("cargo:rustc-link-search={link_dir}");
 
     for path in c_files {
-        ccomp.file(c_src_path.join(path));
+        ccomp.file(format!("speex/libspeex/{path}"));
     }
 
-    let dst = PathBuf::from(env::var_os("OUT_DIR").unwrap());
-
+    ccomp.define("FLOATING_POINT", None).define("EXPORT", "");
+    ccomp.warnings(false);
     ccomp.out_dir(dst.join("lib"));
     ccomp.compile("speex");
 
     let bindings = bindgen::Builder::default()
+        .header("wrapper.h")
         .parse_callbacks(Box::new(CargoCallbacks))
         .generate()
         .expect("Unable to generate bindings");

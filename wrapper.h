@@ -5,4 +5,9 @@
 // obtain one at http://mozilla.org/MPL/2.0/.                                  /
 ////////////////////////////////////////////////////////////////////////////////
 
-#include ""
+#include "speex/include/speex/speex.h"
+#include "speex/include/speex/speex_bits.h"
+#include "speex/include/speex/speex_callbacks.h"
+#include "speex/include/speex/speex_header.h"
+#include "speex/include/speex/speex_stereo.h"
+#include "speex/include/speex/speex_types.h"
